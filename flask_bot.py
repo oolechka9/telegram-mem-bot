@@ -40,30 +40,4 @@ async def handle_new_post(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pastes = load_pastes()
         msg_id = update.channel_post.message_id
         if msg_id not in pastes:
-            pastes.append(msg_id)
-            save_pastes(pastes)
-
-flask_app = Flask(__name__)
-application = Application.builder().token(TOKEN).build()
-application.add_handler(CommandHandler("start", start))
-application.add_handler(CallbackQueryHandler(button))
-application.add_handler(MessageHandler(filters.ALL, handle_new_post))
-
-import threading, asyncio
-def run():
-    async def runner():
-        await application.initialize()
-        await application.start()
-    asyncio.run(runner())
-
-threading.Thread(target=run).start()
-
-@flask_app.route(f"/{TOKEN}", methods=["POST"])
-def webhook():
-    update = Update.de_json(request.get_json(force=True), application.bot)
-    application.update_queue.put_nowait(update)
-    return "OK"
-
-@flask_app.route("/")
-def index():
-    return "Бот работает!"
+            pastes.append(msg_
